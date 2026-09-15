@@ -1,0 +1,38 @@
+{% set context = hookable_metadata.context %}
+
+{% if context.methods.email and context.policy != 'disabled' %}
+    <section class="card mb-4 calmfox-shop-two-factor-method calmfox-shop-two-factor-method--email">
+        <div class="card-body">
+            <h2 class="h5">{{ 'calmfox_shop_two_factor.email_method.title'|trans }}</h2>
+
+            {% if context.user.emailAuthEnabled %}
+                <p class="mb-1">{{ ux_icon('tabler:circle-check', {class: 'icon icon-sm text-success'}) }} {{ 'calmfox_shop_two_factor.email_method.on'|trans({'%email%': context.user.email|calmfox_mask_email}) }}</p>
+                <details>
+                    <summary class="small">{{ 'calmfox_shop_two_factor.account.remove'|trans }}</summary>
+                    {% include '@CalmfoxSyliusShopTwoFactorPlugin/account/section/_remove_form.html.twig' with {method: 'email', label: 'calmfox_shop_two_factor.email_method.remove'|trans} %}
+                </details>
+            {% else %}
+                <p class="text-body-secondary mb-2">{{ 'calmfox_shop_two_factor.email_method.lead'|trans({'%email%': context.user.email|calmfox_mask_email}) }}</p>
+                <p class="small text-body-secondary">{{ 'calmfox_shop_two_factor.email_method.weaker'|trans }}</p>
+
+                {% if context.emailPending %}
+                    <form action="{{ path('calmfox_shop_two_factor_account_manage', {method: 'email', operation: 'confirm'}) }}" method="post" class="row g-2 align-items-end mb-2">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token(calmfox_shop_two_factor_csrf_id('email', 'confirm')) }}">
+                        <div class="col">
+                            <label class="form-label small mb-1" for="calmfox-email-code">{{ 'calmfox_shop_two_factor.login.email_code'|trans }}</label>
+                            <input id="calmfox-email-code" type="text" name="code" class="form-control font-monospace" autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]*" maxlength="6" required autofocus>
+                        </div>
+                        <div class="col-auto"><button type="submit" class="btn btn-primary">{{ 'calmfox_shop_two_factor.email_method.confirm'|trans }}</button></div>
+                    </form>
+                {% endif %}
+
+                <form action="{{ path('calmfox_shop_two_factor_account_manage', {method: 'email', operation: 'start'}) }}" method="post">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token(calmfox_shop_two_factor_csrf_id('email', 'start')) }}">
+                    <button type="submit" class="btn {{ context.emailPending ? 'btn-link btn-sm px-0' : 'btn-outline-primary' }}">
+                        {{ (context.emailPending ? 'calmfox_shop_two_factor.email_method.resend' : 'calmfox_shop_two_factor.email_method.start')|trans }}
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    </section>
+{% endif %}

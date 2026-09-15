@@ -1,0 +1,27 @@
+{#
+    Login code for a shop customer. Variables: user, code, channel, localeCode.
+    Uses the shop's mail layout (@SyliusCore/Email/layout.html.twig), so a themed shop gets its
+    own look. Parts are blocks: extend '@!CalmfoxSyliusShopTwoFactorPlugin/email/code.html.twig'
+    in templates/bundles/CalmfoxSyliusShopTwoFactorPlugin/email/ to restyle them.
+#}
+{% extends '@SyliusCore/Email/layout.html.twig' %}
+
+{% block subject %}{{ 'calmfox_shop_two_factor.email.subject'|trans({}, null, localeCode)|raw }}{% endblock %}
+
+{% block content %}
+    {% block heading %}
+        <div style="text-align: center; font-size: 24px; margin-bottom: 20px;">{{ 'calmfox_shop_two_factor.email.heading'|trans({}, null, localeCode) }}</div>
+    {% endblock %}
+
+    {% block lead %}
+        <p style="text-align: center; margin: 0 0 20px 0;">{{ 'calmfox_shop_two_factor.email.lead'|trans({}, null, localeCode) }}</p>
+    {% endblock %}
+
+    {% block code %}
+        <div style="text-align: center; font-family: 'Courier New', monospace; font-size: 32px; letter-spacing: 6px; font-weight: bold; margin: 0 0 20px 0;">{{ code }}</div>
+    {% endblock %}
+
+    {% block details %}
+        <p style="text-align: center; margin: 0; font-size: 14px; color: #777;">{{ 'calmfox_shop_two_factor.email.details'|trans({}, null, localeCode) }}</p>
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,90 @@
+name: Build
+
+on:
+    push:
+        branches: [main]
+    pull_request: ~
+    schedule:
+        - cron: "0 3 * * 1" # every Monday, to catch upstream changes
+    workflow_dispatch: ~
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
+jobs:
+    tests:
+        name: "PHP ${{ matrix.php }}, Sylius ${{ matrix.sylius }}"
+        runs-on: ubuntu-latest
+
+        strategy:
+            fail-fast: false
+            matrix:
+                php: ["8.2", "8.3", "8.4", "8.5"]
+                sylius: ["~2.2.0"]
+                include:
+                    - php: "8.3"
+                      sylius: "~2.1.0"
+
+        services:
+            mysql:
+                image: mysql:8.4
+                env:
+                    MYSQL_ROOT_PASSWORD: root
+                ports:
+                    - 3306:3306
+                options: --health-cmd="mysqladmin ping -proot" --health-interval=5s --health-timeout=5s --health-retries=20
+
+        env:
+            APP_ENV: test
+            DATABASE_URL: "mysql://root:root@127.0.0.1:3306/sylius_test?serverVersion=8.4"
+
+        steps:
+            - uses: actions/checkout@v5
+
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: intl, gd, sodium, zip, bcmath, exif, pdo_mysql
+                  tools: composer:v2
+                  coverage: none
+
+            - uses: actions/setup-node@v5
+              with:
+                  node-version: "22"
+
+            - name: Validate composer.json
+              run: composer validate --strict
+
+            - name: Install dependencies
+              run: |
+                  composer require "sylius/sylius:${{ matrix.sylius }}" --no-update --no-interaction
+                  composer update --no-interaction --no-progress --prefer-dist
+
+            - name: Security audit
+              run: composer audit --abandoned=ignore
+
+            - name: Coding standard
+              run: vendor/bin/ecs check --no-progress-bar
+
+            - name: Static analysis
+              run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G
+
+            - name: Build the test application
+              run: |
+                  (cd vendor/sylius/test-application && yarn install --non-interactive && yarn build)
+                  vendor/bin/console assets:install vendor/sylius/test-application/public
+                  vendor/bin/console doctrine:database:create --if-not-exists
+                  vendor/bin/console doctrine:schema:create
+
+            - name: Lint container, templates and configuration
+              run: |
+                  vendor/bin/console lint:container
+                  vendor/bin/console lint:twig templates
+                  vendor/bin/console lint:yaml config translations
+
+            - name: Tests
+              run: vendor/bin/phpunit

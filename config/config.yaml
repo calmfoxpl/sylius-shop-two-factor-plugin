@@ -1,0 +1,20 @@
+imports:
+    - { resource: 'twig_hooks/*.yaml' }
+
+scheb_two_factor:
+    security_tokens:
+        - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+        - Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken
+    totp:
+        enabled: true
+    email:
+        enabled: true
+        digits: 6
+        mailer: calmfox_shop_two_factor.email.mailer
+        form_renderer: calmfox_shop_two_factor.form_renderer
+
+sylius_mailer:
+    emails:
+        calmfox_shop_two_factor_code:
+            subject: calmfox_shop_two_factor.email.subject
+            template: '@CalmfoxSyliusShopTwoFactorPlugin/email/code.html.twig'

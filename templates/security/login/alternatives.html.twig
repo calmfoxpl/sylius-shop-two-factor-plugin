@@ -1,0 +1,14 @@
+{% set context = hookable_metadata.context %}
+{% set current = context.twoFactorProvider|default('') %}
+{% set others = context.availableTwoFactorProviders|default([])|filter(p => p != current and p in ['shop_passkey', 'totp', 'email']) %}
+
+<div class="mt-4 text-center small">
+    {% for provider in others %}
+        <div class="mb-1">
+            <a href="{{ path('calmfox_shop_two_factor_login', {preferProvider: provider}) }}">{{ ('calmfox_shop_two_factor.login.use_' ~ (provider == 'shop_passkey' ? 'passkey' : provider))|trans }}</a>
+        </div>
+    {% endfor %}
+    <div class="mt-3">
+        <a href="{{ context.logoutPath }}" class="text-body-secondary">{{ 'calmfox_shop_two_factor.login.cancel'|trans }}</a>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+calmfox_shop_two_factor:
+    account:
+        wrong_password: Obecne hasło jest nieprawidłowe.
+        wrong_code: Ten kod jest nieprawidłowy albo wygasł. Spróbuj ponownie.
+        totp_enabled: Aplikacja uwierzytelniająca jest włączona.
+        totp_removed: Aplikacja uwierzytelniająca została odłączona.
+        email_code_sent: 'Wysłaliśmy kod na %email%. Wpisz go poniżej.'
+        email_enabled: Kod na e-mail jest włączony.
+        email_removed: Kod na e-mail został wyłączony.
+        passkey_added: Klucz dostępu został dodany.
+        passkey_removed: Klucz dostępu został usunięty.
+    email:
+        code_resent: Wysłaliśmy nowy kod.
+        wait: 'Nowy kod możesz zamówić za %seconds% s.'
+    settings:
+        saved: Polityka weryfikacji dwuetapowej klientów została zapisana.
+    manage:
+        reset_done: 'Zresetowano weryfikację dwuetapową klienta %email%.'
+        disable_done: 'Wyłączono weryfikację dwuetapową klienta %email%.'

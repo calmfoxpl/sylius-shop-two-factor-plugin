@@ -1,0 +1,37 @@
+imports:
+    - { resource: '@CalmfoxSyliusShopTwoFactorPlugin/config/config.yaml' }
+
+sylius_mailer:
+    sender:
+        name: Test shop
+        address: shop@example.com
+
+doctrine:
+    orm:
+        mappings:
+            TestApplication:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/../../../tests/TestApplication/Entity'
+                prefix: 'Tests\Calmfox\SyliusShopTwoFactorPlugin\TestApplication\Entity'
+
+sylius_user:
+    resources:
+        shop:
+            user:
+                classes:
+                    model: Tests\Calmfox\SyliusShopTwoFactorPlugin\TestApplication\Entity\ShopUser
+
+scheb_two_factor:
+    totp:
+        issuer: Test shop
+
+# the test application's security.yaml defines the shop firewall; this adds two-factor to it
+security:
+    firewalls:
+        shop:
+            two_factor:
+                auth_form_path: calmfox_shop_two_factor_login
+                check_path: calmfox_shop_two_factor_login_check
+                default_target_path: sylius_shop_homepage
+                enable_csrf: true

@@ -1,0 +1,24 @@
+{% set form = hookable_metadata.context.form %}
+
+<div class="col-12 col-lg-8">
+    <div class="form-label">{{ 'calmfox_shop_two_factor.settings.policy'|trans }}</div>
+    <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+        {% for choice in form.policy %}
+            <label class="form-selectgroup-item flex-fill">
+                <input type="radio" class="form-selectgroup-input" id="{{ choice.vars.id }}" name="{{ choice.vars.full_name }}"
+                       value="{{ choice.vars.value }}" {% if choice.vars.checked %}checked{% endif %}>
+                <div class="form-selectgroup-label d-flex align-items-start p-3 text-start">
+                    <div class="me-3"><span class="form-selectgroup-check"></span></div>
+                    <div>
+                        <strong>{{ choice.vars.label|trans }}</strong>
+                        <div class="text-secondary">{{ (choice.vars.label ~ '_help')|trans }}</div>
+                    </div>
+                </div>
+            </label>
+            {% do choice.setRendered %}
+        {% endfor %}
+        {% do form.policy.setRendered %}
+    </div>
+    {{ form_errors(form.policy) }}
+    <div class="form-hint mt-2">{{ 'calmfox_shop_two_factor.settings.help'|trans }}</div>
+</div>

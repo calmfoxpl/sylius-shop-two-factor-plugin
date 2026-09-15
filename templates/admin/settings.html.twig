@@ -1,0 +1,19 @@
+{% extends '@SyliusAdmin/shared/layout/base.html.twig' %}
+
+{% set prefixes = ['calmfox_shop_two_factor.admin_settings', 'sylius_admin.common'] %}
+
+{% block title %}{{ 'calmfox_shop_two_factor.settings.title'|trans }} | {{ parent() }}{% endblock %}
+
+{% block body %}
+    {% hook 'create' with { _prefixes: prefixes, form } %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% hook 'create#stylesheets' with { _prefixes: prefixes } %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% hook 'create#javascripts' with { _prefixes: prefixes } %}
+{% endblock %}

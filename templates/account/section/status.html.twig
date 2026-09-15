@@ -1,0 +1,11 @@
+{% set context = hookable_metadata.context %}
+
+{% if context.policy == 'disabled' %}
+    <div class="alert alert-secondary">{{ 'calmfox_shop_two_factor.account.policy_disabled'|trans }}</div>
+{% elseif context.mandatory %}
+    <div class="alert alert-warning">{{ 'calmfox_shop_two_factor.account.mandatory'|trans }}</div>
+{% elseif context.user.twoFactorAuthentication %}
+    <div class="alert alert-success">{{ 'calmfox_shop_two_factor.account.on'|trans }}</div>
+{% else %}
+    <div class="alert alert-info">{{ 'calmfox_shop_two_factor.account.off'|trans }}</div>
+{% endif %}

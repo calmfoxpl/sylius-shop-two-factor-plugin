@@ -1,0 +1,58 @@
+{% include '@CalmfoxSyliusShopTwoFactorPlugin/passkey/_client.html.twig' %}
+
+<div data-calmfox-passkey-login
+     data-options-url="{{ path('calmfox_shop_two_factor_login_passkey_options') }}"
+     data-csrf="{{ csrf_token('calmfox_shop_two_factor_passkey') }}"
+     data-busy-label="{{ 'calmfox_shop_two_factor.passkey.waiting'|trans }}"
+     data-unsupported-label="{{ 'calmfox_shop_two_factor.passkey.unsupported'|trans }}">
+    <div class="alert alert-danger" role="alert" data-error hidden></div>
+
+    <button type="button" class="btn btn-primary w-100" data-start>
+        {{ ux_icon('tabler:fingerprint', {class: 'icon'}) }}
+        <span data-label>{{ 'calmfox_shop_two_factor.passkey.use'|trans }}</span>
+    </button>
+
+    <form action="{{ context.checkPathUrl }}" method="post" data-form>
+        <input type="hidden" name="{{ context.authCodeParameterName }}" data-code>
+        {% include '@CalmfoxSyliusShopTwoFactorPlugin/security/login/provider/_fields.html.twig' %}
+    </form>
+</div>
+
+
+<script>
+    (() => {
+        const root = document.querySelector('[data-calmfox-passkey-login]');
+        const passkey = window.CalmfoxPasskey;
+        const button = root.querySelector('[data-start]');
+        const label = root.querySelector('[data-label]');
+        const error = root.querySelector('[data-error]');
+        const idle = label.textContent;
+
+        if (!passkey.supported()) {
+            button.disabled = true;
+            error.textContent = root.dataset.unsupportedLabel;
+            error.hidden = false;
+            return;
+        }
+
+        button.addEventListener('click', async () => {
+            error.hidden = true;
+            button.disabled = true;
+            label.textContent = root.dataset.busyLabel;
+            try {
+                const { options } = await passkey.post(root.dataset.optionsUrl, root.dataset.csrf);
+                const credential = await passkey.get(options);
+                root.querySelector('[data-code]').value = JSON.stringify(credential);
+                root.querySelector('[data-form]').submit();
+                return;
+            } catch (e) {
+                if (!passkey.cancelled(e)) {
+                    error.textContent = e.message;
+                    error.hidden = false;
+                }
+            }
+            button.disabled = false;
+            label.textContent = idle;
+        });
+    })();
+</script>

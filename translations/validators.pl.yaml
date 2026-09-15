@@ -1,0 +1,5 @@
+calmfox_shop_two_factor:
+    passkey:
+        challenge_gone: Żądanie wygasło. Spróbuj ponownie.
+        rejected: Nie udało się potwierdzić odpowiedzi urządzenia. Spróbuj ponownie.
+        already_paired: Ten klucz dostępu jest już dodany do Twojego konta.

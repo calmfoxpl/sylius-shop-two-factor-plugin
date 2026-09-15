@@ -1,0 +1,31 @@
+sylius_twig_hooks:
+    hooks:
+        # customer page in the panel
+        'sylius_admin.customer.show.content.sections':
+            calmfox_shop_two_factor:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/admin/customer/two_factor_card.html.twig'
+                priority: -100
+
+        # Configuration → Two-factor authentication for customers
+        'calmfox_shop_two_factor.admin_settings.create.content.header':
+            breadcrumbs:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/admin/settings/breadcrumbs.html.twig'
+                priority: 100
+        'calmfox_shop_two_factor.admin_settings.create.content.header.title_block':
+            title:
+                template: '@SyliusAdmin/shared/crud/create/content/header/title_block/title.html.twig'
+                configuration:
+                    header: 'calmfox_shop_two_factor.settings.title'
+                priority: 100
+        'calmfox_shop_two_factor.admin_settings.create.content.header.title_block.actions':
+            cancel:
+                enabled: false
+            create:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/admin/settings/save_action.html.twig'
+                priority: 0
+        'calmfox_shop_two_factor.admin_settings.create.content.form.sections.general':
+            default:
+                enabled: false
+            policy:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/admin/settings/policy.html.twig'
+                priority: 0

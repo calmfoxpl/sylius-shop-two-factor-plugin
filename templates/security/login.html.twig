@@ -1,0 +1,20 @@
+{% extends '@SyliusShop/shared/layout/base.html.twig' %}
+
+{% block title %}{{ 'calmfox_shop_two_factor.login.title'|trans }} | {{ parent() }}{% endblock %}
+
+{% block content %}
+    {% hook 'calmfox_shop_two_factor.login' with {
+        twoFactorProvider,
+        availableTwoFactorProviders,
+        authenticationError,
+        authenticationErrorData,
+        checkPathUrl: checkPathUrl ?: path(checkPathRoute),
+        authCodeParameterName,
+        displayTrustedOption,
+        trustedParameterName,
+        isCsrfProtectionEnabled,
+        csrfParameterName,
+        csrfTokenId,
+        logoutPath,
+    } %}
+{% endblock %}

@@ -1,0 +1,51 @@
+{# Customer page in the panel: their login security and reset / turn off. #}
+{% set user = hookable_metadata.context.user|default(null) %}
+{% set customer = hookable_metadata.context.resource|default(null) %}
+
+{% if user is not null and user.twoFactorAuthentication is defined %}
+    {% set policy = calmfox_shop_two_factor_policy() %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="card-title">{{ 'calmfox_shop_two_factor.admin.card_title'|trans }}</div>
+            <div class="card-actions">
+                <a href="{{ path('calmfox_shop_two_factor_admin_settings') }}" class="text-secondary">
+                    {{ 'calmfox_shop_two_factor.settings.policy'|trans }}: {{ ('calmfox_shop_two_factor.settings.policy_' ~ policy ~ '_short')|trans }}
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-3">
+                <dt class="col-5 col-lg-3">{{ 'calmfox_shop_two_factor.passkey.title_plural'|trans }}</dt>
+                <dd class="col-7 col-lg-9">
+                    {% for passkey in user.passkeyCredentials %}
+                        <div>{{ passkey.name }} <span class="text-secondary small">· {{ passkey.createdAt|date('Y-m-d') }}{% if passkey.lastUsedAt %} · {{ 'calmfox_shop_two_factor.passkey.last_used'|trans }} {{ passkey.lastUsedAt|date('Y-m-d H:i') }}{% endif %}</span></div>
+                    {% else %}—{% endfor %}
+                </dd>
+                <dt class="col-5 col-lg-3">{{ 'calmfox_shop_two_factor.totp.title'|trans }}</dt>
+                <dd class="col-7 col-lg-9">{{ user.totpAuthenticationEnabled ? 'calmfox_shop_two_factor.admin.on'|trans : '—' }}</dd>
+                <dt class="col-5 col-lg-3">{{ 'calmfox_shop_two_factor.email_method.title'|trans }}</dt>
+                <dd class="col-7 col-lg-9">{{ user.emailAuthEnabled ? 'calmfox_shop_two_factor.admin.on'|trans : '—' }}</dd>
+                {% if user.twoFactorSetupRequired %}
+                    <dt class="col-5 col-lg-3">{{ 'calmfox_shop_two_factor.admin.status'|trans }}</dt>
+                    <dd class="col-7 col-lg-9 text-warning">{{ 'calmfox_shop_two_factor.admin.pending'|trans }}</dd>
+                {% endif %}
+            </dl>
+
+            <div class="btn-list">
+                {% for operation in ['reset', 'disable'] %}
+                    {% if operation == 'reset' or user.twoFactorAuthentication or user.twoFactorSetupRequired %}
+                        <form action="{{ path('calmfox_shop_two_factor_admin_manage_customer', {id: customer.id, operation: operation}) }}" method="post" class="d-inline"
+                              onsubmit="return confirm({{ ('calmfox_shop_two_factor.manage.' ~ operation ~ '_confirm')|trans({'%email%': customer.email})|json_encode }});">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token(calmfox_shop_two_factor_customer_csrf_id(operation, customer.id)) }}">
+                            <button type="submit" class="btn {{ operation == 'disable' ? 'btn-outline-danger' : '' }}">
+                                {{ ux_icon(operation == 'reset' ? 'tabler:refresh' : 'tabler:shield-off', {class: 'icon'}) }}
+                                {{ ('calmfox_shop_two_factor.manage.' ~ operation)|trans }}
+                            </button>
+                        </form>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="form-hint mt-2">{{ 'calmfox_shop_two_factor.manage.hint'|trans }}</div>
+        </div>
+    </div>
+{% endif %}

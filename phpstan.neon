@@ -1,0 +1,9 @@
+parameters:
+    level: max
+    paths:
+        - src
+        - tests/Unit
+        - tests/Functional
+        - tests/Support
+        - tests/TestApplication/Entity
+    tmpDir: var/phpstan

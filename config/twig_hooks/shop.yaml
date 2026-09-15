@@ -1,0 +1,40 @@
+sylius_twig_hooks:
+    hooks:
+        # second factor at login
+        'calmfox_shop_two_factor.login':
+            content:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/security/login/content.html.twig'
+                priority: 0
+        'calmfox_shop_two_factor.login.content':
+            header:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/security/login/header.html.twig'
+                priority: 200
+            form:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/security/login/form.html.twig'
+                priority: 100
+            alternatives:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/security/login/alternatives.html.twig'
+                priority: 0
+
+        # My account → Login security (prefixes [calmfox_shop_two_factor.account, sylius_shop.account.common])
+        'calmfox_shop_two_factor.account.update.content':
+            breadcrumbs:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/account/breadcrumbs.html.twig'
+                priority: 200
+        'calmfox_shop_two_factor.account.update.content.main':
+            status:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/account/section/status.html.twig'
+                priority: -100
+            passkeys:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/account/section/passkeys.html.twig'
+                priority: -200
+            totp:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/account/section/totp.html.twig'
+                priority: -300
+            email:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/account/section/email.html.twig'
+                priority: -400
+        'calmfox_shop_two_factor.account.update.content.main.header':
+            title:
+                template: '@CalmfoxSyliusShopTwoFactorPlugin/account/title.html.twig'
+                priority: 0

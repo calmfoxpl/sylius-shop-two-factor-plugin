@@ -1,0 +1,4 @@
+{% set provider = hookable_metadata.context.twoFactorProvider|default('totp') %}
+
+<h1 class="h2 mb-2">{{ 'calmfox_shop_two_factor.login.title'|trans }}</h1>
+<p class="text-body-secondary mb-4">{{ ('calmfox_shop_two_factor.login.lead_' ~ (provider == 'shop_passkey' ? 'passkey' : provider))|trans }}</p>

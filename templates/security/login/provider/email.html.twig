@@ -1,0 +1,17 @@
+<form action="{{ context.checkPathUrl }}" method="post" novalidate>
+    <div class="mb-3">
+        <label class="form-label required" for="_auth_code">{{ 'calmfox_shop_two_factor.login.email_code'|trans }}</label>
+        <input id="_auth_code" type="text" name="{{ context.authCodeParameterName }}" class="form-control form-control-lg text-center font-monospace"
+               autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]*" maxlength="6" autofocus required>
+        {% if app.user and app.user.email is defined %}
+            <div class="form-text">{{ 'calmfox_shop_two_factor.login.email_sent_to'|trans({'%email%': app.user.email|calmfox_mask_email}) }}</div>
+        {% endif %}
+    </div>
+    {% include '@CalmfoxSyliusShopTwoFactorPlugin/security/login/provider/_fields.html.twig' %}
+    <div class="d-grid"><button type="submit" class="btn btn-primary">{{ 'calmfox_shop_two_factor.login.verify'|trans }}</button></div>
+</form>
+
+<form action="{{ path('calmfox_shop_two_factor_login_email_resend') }}" method="post" class="mt-2 text-center">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('calmfox_shop_two_factor_email_resend') }}">
+    <button type="submit" class="btn btn-link btn-sm">{{ 'calmfox_shop_two_factor.login.email_resend'|trans }}</button>
+</form>

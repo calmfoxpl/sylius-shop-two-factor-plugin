@@ -1,0 +1,84 @@
+calmfox_shop_two_factor:
+    login:
+        title: Weryfikacja dwuetapowa
+        lead_passkey: Potwierdź logowanie kluczem dostępu – odciskiem palca, twarzą albo PIN-em urządzenia.
+        lead_totp: Wpisz 6-cyfrowy kod z aplikacji uwierzytelniającej.
+        lead_email: Wysłaliśmy kod na Twój adres e-mail. Wpisz go, aby się zalogować.
+        use_passkey: Użyj klucza dostępu
+        use_totp: Wpisz kod z aplikacji
+        use_email: Wyślij kod na e-mail
+        cancel: Anuluj i wyloguj
+        app_code: Kod z aplikacji
+        email_code: Kod z wiadomości e-mail
+        email_sent_to: 'Kod wysłaliśmy na %email%.'
+        email_resend: Wyślij nowy kod
+        verify: Zaloguj
+    passkey:
+        title: Klucz dostępu
+        title_plural: Klucze dostępu
+        recommended: Zalecane
+        lead: Logujesz się odciskiem palca, twarzą albo PIN-em tego urządzenia. Nie da się go wyłudzić fałszywą stroną i nie trzeba nic przepisywać.
+        use: Dodaj klucz dostępu
+        add_another: Dodaj kolejny klucz
+        waiting: Czekam na urządzenie…
+        unsupported: Ta przeglądarka nie obsługuje kluczy dostępu. Wybierz inny sposób poniżej.
+        unsupported_here: Ta przeglądarka nie obsługuje kluczy dostępu. Możesz dodać klucz na innym urządzeniu.
+        added: dodany
+        last_used: ostatnio użyty
+        remove: Usuń klucz
+    totp:
+        title: Aplikacja uwierzytelniająca
+        lead: Kod z aplikacji takiej jak Google Authenticator, Microsoft Authenticator, 1Password czy Aegis.
+        set_up: Skonfiguruj aplikację
+        qr_alt: Kod QR dla aplikacji uwierzytelniającej
+        manual: 'Zeskanuj kod QR albo wpisz w aplikacji ten klucz, a potem podaj kod, który pokaże:'
+        enable: Włącz
+        on: Aplikacja jest połączona z kontem.
+        remove: Odłącz aplikację
+    email_method:
+        title: Kod na e-mail
+        lead: 'Przy logowaniu wyślemy 6-cyfrowy kod na %email%.'
+        weaker: Ta metoda jest słabsza od klucza dostępu i aplikacji – ktoś, kto przejmie Twoją skrzynkę, może zresetować hasło i odebrać kod. Jeśli możesz, dodaj też klucz dostępu.
+        start: Wyślij kod i włącz
+        resend: Wyślij kod ponownie
+        confirm: Potwierdź i włącz
+        on: 'Kody logowania wysyłamy na %email%.'
+        remove: Wyłącz kod na e-mail
+    account:
+        menu: Bezpieczeństwo logowania
+        lead: Oprócz hasła możesz potwierdzać logowanie drugim sposobem. Wybierz jeden lub kilka.
+        policy_disabled: Weryfikacja dwuetapowa jest w tym sklepie wyłączona.
+        mandatory: Ten sklep wymaga weryfikacji dwuetapowej. Włącz jeden ze sposobów poniżej, aby korzystać z konta.
+        on: Weryfikacja dwuetapowa jest włączona.
+        off: Weryfikacja dwuetapowa jest wyłączona. Włącz ją, aby lepiej chronić konto.
+        current_password: Obecne hasło
+        remove: Wyłącz…
+    email:
+        subject: Kod logowania
+        heading: Kod logowania
+        lead: 'Wpisz ten kod, aby dokończyć logowanie:'
+        details: Jeśli to nie Ty próbujesz się zalogować, zmień hasło do konta.
+    settings:
+        title: Weryfikacja dwuetapowa klientów
+        policy: Polityka
+        policy_required: Wymagana dla wszystkich klientów
+        policy_required_help: Klient bez włączonej metody widzi w koncie tylko stronę bezpieczeństwa logowania. Zakupy działają normalnie.
+        policy_required_short: wymagana
+        policy_optional: Dobrowolna
+        policy_optional_help: Klienci sami decydują w swoim koncie. Pytamy tych, którzy włączyli metodę albo mieli zresetowane 2FA.
+        policy_optional_short: dobrowolna
+        policy_disabled: Wyłączona
+        policy_disabled_help: Nikt nie jest pytany o drugi składnik. Włączone metody zostają na kontach.
+        policy_disabled_short: wyłączona
+        help: To jedyne globalne ustawienie 2FA klientów. Reset i wyłączenie dla pojedynczego klienta są na jego stronie w Klientach.
+    manage:
+        reset: Zresetuj 2FA
+        disable: Wyłącz 2FA
+        reset_confirm: 'Zresetować weryfikację dwuetapową klienta %email%? Wszystkie metody zostaną usunięte, a klient będzie musiał włączyć którąś ponownie.'
+        disable_confirm: 'Wyłączyć weryfikację dwuetapową klienta %email%? Wszystkie metody zostaną usunięte, dalej decyduje polityka.'
+        hint: 'Zresetuj: przy zgubionym telefonie lub utracie dostępu, klient włącza metodę od nowa. Wyłącz: usuwa metody, dalej decyduje polityka.'
+    admin:
+        card_title: Weryfikacja dwuetapowa
+        on: włączona
+        status: Stan
+        pending: musi ponownie włączyć metodę

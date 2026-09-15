@@ -1,0 +1,39 @@
+{% set context = hookable_metadata.context %}
+
+{% if context.methods.totp and context.policy != 'disabled' %}
+    <section class="card mb-4 calmfox-shop-two-factor-method calmfox-shop-two-factor-method--totp">
+        <div class="card-body">
+            <h2 class="h5">{{ 'calmfox_shop_two_factor.totp.title'|trans }}</h2>
+
+            {% if context.user.totpAuthenticationEnabled %}
+                <p class="mb-1">{{ ux_icon('tabler:circle-check', {class: 'icon icon-sm text-success'}) }} {{ 'calmfox_shop_two_factor.totp.on'|trans }}</p>
+                <details>
+                    <summary class="small">{{ 'calmfox_shop_two_factor.account.remove'|trans }}</summary>
+                    {% include '@CalmfoxSyliusShopTwoFactorPlugin/account/section/_remove_form.html.twig' with {method: 'totp', label: 'calmfox_shop_two_factor.totp.remove'|trans} %}
+                </details>
+            {% else %}
+                <p class="text-body-secondary">{{ 'calmfox_shop_two_factor.totp.lead'|trans }}</p>
+                <details>
+                    <summary>{{ 'calmfox_shop_two_factor.totp.set_up'|trans }}</summary>
+                    <div class="row g-3 mt-1 align-items-center">
+                        <div class="col-12 col-sm-auto text-center">
+                            <img src="{{ context.qrCode }}" alt="{{ 'calmfox_shop_two_factor.totp.qr_alt'|trans }}" width="180" height="180" class="border rounded p-2 bg-white">
+                        </div>
+                        <div class="col-12 col-sm">
+                            <p class="small mb-1">{{ 'calmfox_shop_two_factor.totp.manual'|trans }}</p>
+                            <code class="d-block mb-3 user-select-all">{{ context.secret }}</code>
+                            <form action="{{ path('calmfox_shop_two_factor_account_manage', {method: 'totp', operation: 'enable'}) }}" method="post" class="row g-2 align-items-end">
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token(calmfox_shop_two_factor_csrf_id('totp', 'enable')) }}">
+                                <div class="col">
+                                    <label class="form-label small mb-1" for="calmfox-totp-code">{{ 'calmfox_shop_two_factor.login.app_code'|trans }}</label>
+                                    <input id="calmfox-totp-code" type="text" name="code" class="form-control font-monospace" autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]*" maxlength="6" required>
+                                </div>
+                                <div class="col-auto"><button type="submit" class="btn btn-primary">{{ 'calmfox_shop_two_factor.totp.enable'|trans }}</button></div>
+                            </form>
+                        </div>
+                    </div>
+                </details>
+            {% endif %}
+        </div>
+    </section>
+{% endif %}

@@ -1,0 +1,208 @@
+services:
+    _defaults:
+        autowire: false
+        autoconfigure: false
+        public: false
+
+    # the code form, its passkey challenge and e-mail resend are reachable while 2FA is in progress
+    calmfox_shop_two_factor.security.access_map:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Security\RouteAccessMap
+        decorates: security.access_map
+        arguments:
+            $decorated: '@.inner'
+            $attributesByRoute:
+                calmfox_shop_two_factor_login: ['IS_AUTHENTICATED_2FA_IN_PROGRESS']
+                calmfox_shop_two_factor_login_check: ['IS_AUTHENTICATED_2FA_IN_PROGRESS']
+                calmfox_shop_two_factor_login_passkey_options: ['IS_AUTHENTICATED_2FA_IN_PROGRESS']
+                calmfox_shop_two_factor_login_email_resend: ['IS_AUTHENTICATED_2FA_IN_PROGRESS']
+
+    calmfox_shop_two_factor.policy:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Policy\TwoFactorPolicy
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+            $defaultPolicy: '%calmfox_sylius_shop_two_factor.default_policy%'
+
+    Calmfox\SyliusShopTwoFactorPlugin\Policy\TwoFactorPolicy:
+        alias: calmfox_shop_two_factor.policy
+
+    calmfox_shop_two_factor.condition:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Policy\TwoFactorCondition
+        arguments: ['@calmfox_shop_two_factor.policy']
+
+    calmfox_shop_two_factor.qr_code_renderer:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Totp\QrCodeRenderer
+
+    calmfox_shop_two_factor.passkey.ceremony:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Passkey\PasskeyCeremony
+        arguments:
+            $rpName: '%calmfox_sylius_shop_two_factor.passkeys.rp_name%'
+            $rpId: '%calmfox_sylius_shop_two_factor.passkeys.rp_id%'
+
+    # code forms in the shop look: passkey and e-mail are this package's own, the app form is shared
+    calmfox_shop_two_factor.form_renderer:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Totp\ShopFormRenderer
+        arguments:
+            $inner: null
+            $tokenStorage: '@security.token_storage'
+            $twig: '@twig'
+            $template: '@@CalmfoxSyliusShopTwoFactorPlugin/security/login.html.twig'
+
+    calmfox_shop_two_factor.totp.form_renderer:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Totp\ShopFormRenderer
+        decorates: scheb_two_factor.security.totp.form_renderer
+        arguments:
+            $inner: '@.inner'
+            $tokenStorage: '@security.token_storage'
+            $twig: '@twig'
+            $template: '@@CalmfoxSyliusShopTwoFactorPlugin/security/login.html.twig'
+
+    calmfox_shop_two_factor.passkey.provider:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Passkey\PasskeyTwoFactorProvider
+        arguments:
+            $ceremony: '@calmfox_shop_two_factor.passkey.ceremony'
+            $requestStack: '@request_stack'
+            $userManager: '@sylius.manager.shop_user'
+            $formRenderer: '@calmfox_shop_two_factor.form_renderer'
+        tags:
+            - { name: scheb_two_factor.provider, alias: shop_passkey }
+
+    calmfox_shop_two_factor.email.mailer:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Email\AuthCodeMailer
+        arguments:
+            $emailSender: '@sylius.email_sender'
+            $channelContext: '@sylius.context.channel'
+            $localeContext: '@sylius.context.locale'
+
+    calmfox_shop_two_factor.email.throttle:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Email\EmailCodeThrottle
+        arguments: ['%calmfox_sylius_shop_two_factor.email_code_resend_interval%']
+
+    calmfox_shop_two_factor.csrf_guard:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Controller\Login\JsonCsrfGuard
+        arguments: ['@security.csrf.token_manager']
+
+    calmfox_shop_two_factor.controller.login.passkey_options:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Controller\Login\PasskeyOptionsAction
+        public: true
+        arguments:
+            $tokenStorage: '@security.token_storage'
+            $ceremony: '@calmfox_shop_two_factor.passkey.ceremony'
+            $csrfGuard: '@calmfox_shop_two_factor.csrf_guard'
+        tags: ['controller.service_arguments']
+
+    calmfox_shop_two_factor.controller.login.email_resend:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Controller\Login\EmailResendAction
+        public: true
+        arguments:
+            $tokenStorage: '@security.token_storage'
+            $codeGenerator: '@scheb_two_factor.security.email.default_code_generator'
+            $throttle: '@calmfox_shop_two_factor.email.throttle'
+            $csrfTokenManager: '@security.csrf.token_manager'
+            $urlGenerator: '@router'
+        tags: ['controller.service_arguments']
+
+    calmfox_shop_two_factor.controller.account.page:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Controller\Account\SecurityPageAction
+        public: true
+        arguments:
+            $security: '@security.helper'
+            $policy: '@calmfox_shop_two_factor.policy'
+            $totpAuthenticator: '@scheb_two_factor.security.totp_authenticator'
+            $qrCodeRenderer: '@calmfox_shop_two_factor.qr_code_renderer'
+            $throttle: '@calmfox_shop_two_factor.email.throttle'
+            $twig: '@twig'
+            $methods: '%calmfox_sylius_shop_two_factor.methods%'
+        tags: ['controller.service_arguments']
+
+    calmfox_shop_two_factor.controller.account.manage:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Controller\Account\ManageAction
+        public: true
+        arguments:
+            $security: '@security.helper'
+            $userManager: '@sylius.manager.shop_user'
+            $totpAuthenticator: '@scheb_two_factor.security.totp_authenticator'
+            $emailCodeGenerator: '@scheb_two_factor.security.email.default_code_generator'
+            $throttle: '@calmfox_shop_two_factor.email.throttle'
+            $passwordHasher: '@security.user_password_hasher'
+            $csrfTokenManager: '@security.csrf.token_manager'
+            $urlGenerator: '@router'
+            $methods: '%calmfox_sylius_shop_two_factor.methods%'
+        tags: ['controller.service_arguments']
+
+    calmfox_shop_two_factor.controller.account.passkey_options:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Controller\Account\PasskeyRegistrationOptionsAction
+        public: true
+        arguments:
+            $security: '@security.helper'
+            $ceremony: '@calmfox_shop_two_factor.passkey.ceremony'
+            $csrfGuard: '@calmfox_shop_two_factor.csrf_guard'
+        tags: ['controller.service_arguments']
+
+    calmfox_shop_two_factor.controller.account.passkey_register:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Controller\Account\PasskeyRegisterAction
+        public: true
+        arguments:
+            $security: '@security.helper'
+            $ceremony: '@calmfox_shop_two_factor.passkey.ceremony'
+            $csrfGuard: '@calmfox_shop_two_factor.csrf_guard'
+            $userManager: '@sylius.manager.shop_user'
+            $urlGenerator: '@router'
+            $translator: '@translator'
+        tags: ['controller.service_arguments']
+
+    calmfox_shop_two_factor.form.type.settings:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Form\Type\TwoFactorSettingsType
+        tags: ['form.type']
+
+    calmfox_shop_two_factor.controller.admin.settings:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Controller\Admin\SettingsAction
+        public: true
+        arguments:
+            $policy: '@calmfox_shop_two_factor.policy'
+            $formFactory: '@form.factory'
+            $urlGenerator: '@router'
+            $twig: '@twig'
+        tags: ['controller.service_arguments']
+
+    calmfox_shop_two_factor.controller.admin.manage_customer:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Controller\Admin\ManageCustomerAction
+        public: true
+        arguments:
+            $customerRepository: '@sylius.repository.customer'
+            $userManager: '@sylius.manager.shop_user'
+            $csrfTokenManager: '@security.csrf.token_manager'
+            $urlGenerator: '@router'
+        tags: ['controller.service_arguments']
+
+    calmfox_shop_two_factor.listener.enforce_setup:
+        class: Calmfox\SyliusShopTwoFactorPlugin\EventListener\EnforceTwoFactorSetupListener
+        arguments:
+            $tokenStorage: '@security.token_storage'
+            $firewallMap: '@security.firewall.map'
+            $urlGenerator: '@router'
+            $policy: '@calmfox_shop_two_factor.policy'
+            $firewallName: '%calmfox_sylius_shop_two_factor.firewall%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, priority: 0 }
+
+    calmfox_shop_two_factor.menu.account:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Menu\AccountMenuListener
+        tags:
+            - { name: kernel.event_listener, event: sylius.menu.shop.account }
+
+    calmfox_shop_two_factor.menu.admin:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Menu\AdminMenuListener
+        tags:
+            - { name: kernel.event_listener, event: sylius.menu.admin.main }
+
+    calmfox_shop_two_factor.twig_extension:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Twig\TwoFactorExtension
+        arguments: ['@calmfox_shop_two_factor.policy']
+        tags: ['twig.extension']
+
+    calmfox_shop_two_factor.command.reset:
+        class: Calmfox\SyliusShopTwoFactorPlugin\Command\ResetTwoFactorCommand
+        arguments:
+            $shopUserRepository: '@sylius.repository.shop_user'
+            $userManager: '@sylius.manager.shop_user'
+        tags: ['console.command']

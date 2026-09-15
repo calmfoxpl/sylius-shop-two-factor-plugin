@@ -1,0 +1,52 @@
+# Import with the same prefix as your Sylius shop routes (e.g. /{_locale}), see README.
+
+# second factor at login; access while 2FA is in progress is granted by RouteAccessMap
+calmfox_shop_two_factor_login:
+    path: /2fa
+    methods: [GET]
+    defaults:
+        _controller: scheb_two_factor.form_controller::form
+
+calmfox_shop_two_factor_login_check:
+    path: /2fa_check
+    methods: [POST]
+
+calmfox_shop_two_factor_login_passkey_options:
+    path: /2fa/passkey/options
+    methods: [POST]
+    defaults:
+        _controller: calmfox_shop_two_factor.controller.login.passkey_options
+
+calmfox_shop_two_factor_login_email_resend:
+    path: /2fa/email/resend
+    methods: [POST]
+    defaults:
+        _controller: calmfox_shop_two_factor.controller.login.email_resend
+
+# My account → Login security (under /account, which Sylius already restricts to logged-in customers)
+calmfox_shop_two_factor_account:
+    path: /account/two-factor
+    methods: [GET]
+    defaults:
+        _controller: calmfox_shop_two_factor.controller.account.page
+
+calmfox_shop_two_factor_account_passkey_options:
+    path: /account/two-factor/passkey/options
+    methods: [POST]
+    defaults:
+        _controller: calmfox_shop_two_factor.controller.account.passkey_options
+
+calmfox_shop_two_factor_account_passkey_register:
+    path: /account/two-factor/passkey
+    methods: [POST]
+    defaults:
+        _controller: calmfox_shop_two_factor.controller.account.passkey_register
+
+calmfox_shop_two_factor_account_manage:
+    path: /account/two-factor/{method}/{operation}
+    methods: [POST]
+    requirements:
+        method: totp|email|passkey
+        operation: enable|remove|start|confirm
+    defaults:
+        _controller: calmfox_shop_two_factor.controller.account.manage

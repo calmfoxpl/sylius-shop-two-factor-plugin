@@ -1,0 +1,12 @@
+{# Turning a method off asks for the current password. Variables: method, extra (hidden fields), label #}
+<form action="{{ path('calmfox_shop_two_factor_account_manage', {method: method, operation: 'remove'}) }}" method="post" class="row g-2 align-items-end mt-2">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token(calmfox_shop_two_factor_csrf_id(method, 'remove')) }}">
+    {% for name, value in extra|default({}) %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}
+    <div class="col-12 col-sm">
+        <label class="form-label small mb-1" for="calmfox-remove-{{ method }}-{{ loop_id|default('') }}">{{ 'calmfox_shop_two_factor.account.current_password'|trans }}</label>
+        <input type="password" class="form-control form-control-sm" id="calmfox-remove-{{ method }}-{{ loop_id|default('') }}" name="current_password" autocomplete="current-password" required>
+    </div>
+    <div class="col-12 col-sm-auto">
+        <button type="submit" class="btn btn-sm btn-outline-danger">{{ label }}</button>
+    </div>
+</form>

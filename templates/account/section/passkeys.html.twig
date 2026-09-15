@@ -1,0 +1,75 @@
+{% set context = hookable_metadata.context %}
+{% set passkeys = context.user.passkeyCredentials %}
+
+{% if context.methods.passkey and context.policy != 'disabled' %}
+    {% include '@CalmfoxSyliusShopTwoFactorPlugin/passkey/_client.html.twig' %}
+
+    <section class="card mb-4 calmfox-shop-two-factor-method calmfox-shop-two-factor-method--passkey">
+        <div class="card-body">
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <h2 class="h5 mb-0">{{ 'calmfox_shop_two_factor.passkey.title'|trans }}</h2>
+                <span class="badge text-bg-success">{{ 'calmfox_shop_two_factor.passkey.recommended'|trans }}</span>
+            </div>
+            <p class="text-body-secondary">{{ 'calmfox_shop_two_factor.passkey.lead'|trans }}</p>
+
+            {% for passkey in passkeys %}
+                <div class="border rounded p-3 mb-2">
+                    <div class="fw-semibold">{{ ux_icon('tabler:fingerprint', {class: 'icon icon-sm'}) }} {{ passkey.name }}</div>
+                    <div class="small text-body-secondary">
+                        {{ 'calmfox_shop_two_factor.passkey.added'|trans }} {{ passkey.createdAt|date('Y-m-d') }}
+                        {% if passkey.lastUsedAt %} · {{ 'calmfox_shop_two_factor.passkey.last_used'|trans }} {{ passkey.lastUsedAt|date('Y-m-d H:i') }}{% endif %}
+                    </div>
+                    <details class="mt-1">
+                        <summary class="small">{{ 'calmfox_shop_two_factor.account.remove'|trans }}</summary>
+                        {% include '@CalmfoxSyliusShopTwoFactorPlugin/account/section/_remove_form.html.twig' with {method: 'passkey', extra: {id: passkey.id}, label: 'calmfox_shop_two_factor.passkey.remove'|trans, loop_id: loop.index} %}
+                    </details>
+                </div>
+            {% endfor %}
+
+            <div data-calmfox-passkey-setup hidden
+                 data-options-url="{{ path('calmfox_shop_two_factor_account_passkey_options') }}"
+                 data-register-url="{{ path('calmfox_shop_two_factor_account_passkey_register') }}"
+                 data-csrf="{{ csrf_token('calmfox_shop_two_factor_passkey') }}"
+                 data-busy-label="{{ 'calmfox_shop_two_factor.passkey.waiting'|trans }}">
+                <div class="alert alert-danger" role="alert" data-error hidden></div>
+                <button type="button" class="btn btn-primary" data-start>
+                    {{ ux_icon('tabler:fingerprint', {class: 'icon icon-sm'}) }}
+                    <span data-label>{{ (passkeys is empty ? 'calmfox_shop_two_factor.passkey.use' : 'calmfox_shop_two_factor.passkey.add_another')|trans }}</span>
+                </button>
+            </div>
+            <p class="small text-body-secondary mb-0" data-unsupported hidden>{{ 'calmfox_shop_two_factor.passkey.unsupported_here'|trans }}</p>
+        </div>
+    </section>
+
+    <script>
+        (() => {
+            const section = document.currentScript.previousElementSibling;
+            const root = section.querySelector('[data-calmfox-passkey-setup]');
+            const passkey = window.CalmfoxPasskey;
+            if (!passkey.supported()) { section.querySelector('[data-unsupported]').hidden = false; return; }
+            root.hidden = false;
+
+            const button = root.querySelector('[data-start]');
+            const label = root.querySelector('[data-label]');
+            const error = root.querySelector('[data-error]');
+            const idle = label.textContent;
+
+            button.addEventListener('click', async () => {
+                error.hidden = true;
+                button.disabled = true;
+                label.textContent = root.dataset.busyLabel;
+                try {
+                    const { options } = await passkey.post(root.dataset.optionsUrl, root.dataset.csrf);
+                    const credential = await passkey.create(options);
+                    const { redirect } = await passkey.post(root.dataset.registerUrl, root.dataset.csrf, { credential, name: passkey.deviceName() });
+                    window.location.assign(redirect);
+                    return;
+                } catch (e) {
+                    if (!passkey.cancelled(e)) { error.textContent = e.message; error.hidden = false; }
+                }
+                button.disabled = false;
+                label.textContent = idle;
+            });
+        })();
+    </script>
+{% endif %}

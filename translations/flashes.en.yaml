@@ -1,0 +1,19 @@
+calmfox_shop_two_factor:
+    account:
+        wrong_password: The current password is not correct.
+        wrong_code: This code is not correct or has expired. Try again.
+        totp_enabled: The authenticator app is turned on.
+        totp_removed: The authenticator app has been disconnected.
+        email_code_sent: 'We sent a code to %email%. Enter it below.'
+        email_enabled: E-mail codes are turned on.
+        email_removed: E-mail codes are turned off.
+        passkey_added: The passkey has been added.
+        passkey_removed: The passkey has been removed.
+    email:
+        code_resent: We have sent a new code.
+        wait: 'You can ask for a new code in %seconds% s.'
+    settings:
+        saved: The customer two-factor policy has been saved.
+    manage:
+        reset_done: 'Two-factor authentication reset for %email%.'
+        disable_done: 'Two-factor authentication turned off for %email%.'

@@ -1,0 +1,6 @@
+{% extends '@SyliusShop/account/common/update.html.twig' %}
+
+{% set prefixes = ['calmfox_shop_two_factor.account'] %}
+{% set attrs = { user, policy, mandatory, methods, qrCode, secret, emailPending, emailResendIn } %}
+
+{% block title %}{{ 'calmfox_shop_two_factor.account.menu'|trans }} | {{ parent() }}{% endblock %}

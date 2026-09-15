@@ -1,0 +1,9 @@
+<form action="{{ context.checkPathUrl }}" method="post" novalidate>
+    <div class="mb-3">
+        <label class="form-label required" for="_auth_code">{{ 'calmfox_shop_two_factor.login.app_code'|trans }}</label>
+        <input id="_auth_code" type="text" name="{{ context.authCodeParameterName }}" class="form-control form-control-lg text-center font-monospace"
+               autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]*" maxlength="6" autofocus required>
+    </div>
+    {% include '@CalmfoxSyliusShopTwoFactorPlugin/security/login/provider/_fields.html.twig' %}
+    <div class="d-grid"><button type="submit" class="btn btn-primary">{{ 'calmfox_shop_two_factor.login.verify'|trans }}</button></div>
+</form>

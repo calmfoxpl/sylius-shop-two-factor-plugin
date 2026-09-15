@@ -1,0 +1,5 @@
+calmfox_shop_two_factor:
+    passkey:
+        challenge_gone: The request has expired. Try again.
+        rejected: The device's response could not be verified. Try again.
+        already_paired: This passkey is already added to your account.

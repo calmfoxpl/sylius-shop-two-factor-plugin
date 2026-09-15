@@ -1,0 +1,84 @@
+calmfox_shop_two_factor:
+    login:
+        title: Two-factor authentication
+        lead_passkey: Confirm it's you with your passkey – fingerprint, face or device PIN.
+        lead_totp: Enter the 6-digit code from your authenticator app.
+        lead_email: We have sent a code to your e-mail address. Enter it to log in.
+        use_passkey: Use a passkey
+        use_totp: Enter a code from the app
+        use_email: Send a code by e-mail
+        cancel: Cancel and log out
+        app_code: Code from the app
+        email_code: Code from the e-mail
+        email_sent_to: 'We sent the code to %email%.'
+        email_resend: Send a new code
+        verify: Log in
+    passkey:
+        title: Passkey
+        title_plural: Passkeys
+        recommended: Recommended
+        lead: Log in with your fingerprint, face or the PIN of this device. It cannot be phished and there is nothing to retype.
+        use: Add a passkey
+        add_another: Add another passkey
+        waiting: Waiting for your device…
+        unsupported: This browser cannot use passkeys. Choose another way below.
+        unsupported_here: This browser cannot use passkeys. You can add one on another device.
+        added: added
+        last_used: last used
+        remove: Remove passkey
+    totp:
+        title: Authenticator app
+        lead: A code from an app such as Google Authenticator, Microsoft Authenticator, 1Password or Aegis.
+        set_up: Set up the app
+        qr_alt: QR code for your authenticator app
+        manual: 'Scan the QR code or enter this key in the app, then type the code it shows:'
+        enable: Turn on
+        on: The app is connected to your account.
+        remove: Disconnect the app
+    email_method:
+        title: Code by e-mail
+        lead: 'At login we will send a 6-digit code to %email%.'
+        weaker: This method is weaker than a passkey or an app – someone who takes over your mailbox can reset your password and receive the code. If you can, add a passkey too.
+        start: Send a code and turn on
+        resend: Send the code again
+        confirm: Confirm and turn on
+        on: 'Login codes are sent to %email%.'
+        remove: Turn off e-mail codes
+    account:
+        menu: Login security
+        lead: Besides your password you can confirm logins with a second factor. Choose one or more.
+        policy_disabled: Two-factor authentication is turned off in this shop.
+        mandatory: This shop requires two-factor authentication. Turn on one of the methods below to use your account.
+        on: Two-factor authentication is on.
+        off: Two-factor authentication is off. Turn it on to protect your account better.
+        current_password: Current password
+        remove: Turn off…
+    email:
+        subject: Your login code
+        heading: Login code
+        lead: 'Enter this code to finish logging in:'
+        details: If you are not trying to log in, change your account password.
+    settings:
+        title: Two-factor authentication for customers
+        policy: Policy
+        policy_required: Required for all customers
+        policy_required_help: A customer without a method sees only the login security page in their account. Shopping works as usual.
+        policy_required_short: required
+        policy_optional: Optional
+        policy_optional_help: Customers decide in their account. Those who turned a method on, or whose 2FA was reset, are asked for it.
+        policy_optional_short: optional
+        policy_disabled: Turned off
+        policy_disabled_help: Nobody is asked for a second factor. Methods stay on the accounts.
+        policy_disabled_short: turned off
+        help: This is the only shop-wide setting for customer 2FA. Resetting or turning it off for a single customer is done on their page in Customers.
+    manage:
+        reset: Reset 2FA
+        disable: Turn off 2FA
+        reset_confirm: 'Reset two-factor authentication for %email%? All methods will be removed and the customer will have to turn one on again.'
+        disable_confirm: 'Turn off two-factor authentication for %email%? All methods will be removed; the policy decides what happens next.'
+        hint: 'Reset: for a lost phone or lost access, the customer turns a method on again. Turn off: removes the methods; the policy decides what happens next.'
+    admin:
+        card_title: Two-factor authentication
+        on: on
+        status: Status
+        pending: must turn a method on again

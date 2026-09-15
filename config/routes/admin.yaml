@@ -1,0 +1,13 @@
+calmfox_shop_two_factor_admin_settings:
+    path: /customer-two-factor/settings
+    methods: [GET, POST]
+    defaults:
+        _controller: calmfox_shop_two_factor.controller.admin.settings
+
+calmfox_shop_two_factor_admin_manage_customer:
+    path: /customers/{id}/two-factor/{operation}
+    methods: [POST]
+    requirements:
+        operation: reset|disable
+    defaults:
+        _controller: calmfox_shop_two_factor.controller.admin.manage_customer

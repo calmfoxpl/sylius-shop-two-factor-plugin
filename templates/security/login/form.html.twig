@@ -1,0 +1,11 @@
+{# Twig Hooks drop null values from the context, hence the defaults #}
+{% set context = hookable_metadata.context %}
+{% set provider = context.twoFactorProvider|default('totp') %}
+
+{% if context.authenticationError|default(null) %}
+    <div class="alert alert-danger" role="alert">
+        {{ context.authenticationError|trans(context.authenticationErrorData|default({}), 'SchebTwoFactorBundle') }}
+    </div>
+{% endif %}
+
+{% include '@CalmfoxSyliusShopTwoFactorPlugin/security/login/provider/' ~ (provider == 'shop_passkey' ? 'passkey' : (provider == 'email' ? 'email' : 'totp')) ~ '.html.twig' %}
