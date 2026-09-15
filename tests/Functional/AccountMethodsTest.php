@@ -18,6 +18,7 @@ final class AccountMethodsTest extends FunctionalTestCase
         foreach (['passkey', 'totp', 'email'] as $method) {
             self::assertCount(1, $crawler->filter('.calmfox-shop-two-factor-method--' . $method), $method);
         }
+        self::assertSelectorTextContains('[data-calmfox-passkey-setup] [data-start]', 'Add a passkey');
 
         $dashboard = $this->client->request('GET', '/en_US/account/dashboard');
         self::assertCount(1, $dashboard->filter('a[href$="/en_US/account/two-factor"]'), 'the account menu links to the page');

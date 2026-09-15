@@ -18,7 +18,7 @@ calmfox_shop_two_factor:
         title_plural: Passkeys
         recommended: Recommended
         lead: Log in with your fingerprint, face or the PIN of this device. It cannot be phished and there is nothing to retype.
-        use: Add a passkey
+        add: Add a passkey
         add_another: Add another passkey
         waiting: Waiting for your device…
         unsupported: This browser cannot use passkeys. Choose another way below.

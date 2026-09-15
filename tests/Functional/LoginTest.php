@@ -76,6 +76,7 @@ final class LoginTest extends FunctionalTestCase
         $this->logIn($user);
         $crawler = $this->client->request('GET', '/en_US/2fa');
         self::assertCount(1, $crawler->filter('[data-calmfox-passkey-login]'));
+        self::assertSelectorTextContains('[data-calmfox-passkey-login] [data-start]', 'Use a passkey');
 
         $login = $this->postJson('/en_US/2fa/passkey/options', (string) $crawler->filter('[data-calmfox-passkey-login]')->attr('data-csrf'));
         /** @var array<string, mixed> $loginOptions */

@@ -34,7 +34,7 @@
                 <div class="alert alert-danger" role="alert" data-error hidden></div>
                 <button type="button" class="btn btn-primary" data-start>
                     {{ ux_icon('tabler:fingerprint', {class: 'icon icon-sm'}) }}
-                    <span data-label>{{ (passkeys is empty ? 'calmfox_shop_two_factor.passkey.use' : 'calmfox_shop_two_factor.passkey.add_another')|trans }}</span>
+                    <span data-label>{{ (passkeys is empty ? 'calmfox_shop_two_factor.passkey.add' : 'calmfox_shop_two_factor.passkey.add_another')|trans }}</span>
                 </button>
             </div>
             <p class="small text-body-secondary mb-0" data-unsupported hidden>{{ 'calmfox_shop_two_factor.passkey.unsupported_here'|trans }}</p>

@@ -18,7 +18,7 @@ calmfox_shop_two_factor:
         title_plural: Klucze dostępu
         recommended: Zalecane
         lead: Logujesz się odciskiem palca, twarzą albo PIN-em tego urządzenia. Nie da się go wyłudzić fałszywą stroną i nie trzeba nic przepisywać.
-        use: Dodaj klucz dostępu
+        add: Dodaj klucz dostępu
         add_another: Dodaj kolejny klucz
         waiting: Czekam na urządzenie…
         unsupported: Ta przeglądarka nie obsługuje kluczy dostępu. Wybierz inny sposób poniżej.
