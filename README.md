@@ -36,6 +36,28 @@ Two-factor authentication for **shop customers** in Sylius 2, built on [scheb/2f
 - **No security configuration beyond the firewall:** the 2FA pages are opened by route name. The policy condition, form renderers and the `shop_passkey` provider apply to shop users only, so the plugin runs next to [calmfox/sylius-admin-two-factor-plugin](https://github.com/calmfoxpl/sylius-admin-two-factor-plugin).
 - **Translations:** English and Polish.
 
+## Screenshots
+
+Customers turn methods on in *My account → Login security*:
+
+<img src="https://raw.githubusercontent.com/calmfoxpl/sylius-shop-two-factor-plugin/main/docs/images/account.png" width="800" alt="Login security page in the customer account">
+
+At login they confirm with the most convenient method, or with a code sent in the shop's mail layout:
+
+<table>
+  <tr>
+    <td valign="top"><img src="https://raw.githubusercontent.com/calmfoxpl/sylius-shop-two-factor-plugin/main/docs/images/login-passkey.png" width="268" alt="Second factor with a passkey and alternatives"></td>
+    <td valign="top"><img src="https://raw.githubusercontent.com/calmfoxpl/sylius-shop-two-factor-plugin/main/docs/images/login-email.png" width="268" alt="Second factor with an e-mail code"></td>
+    <td valign="top"><img src="https://raw.githubusercontent.com/calmfoxpl/sylius-shop-two-factor-plugin/main/docs/images/code-email.png" width="300" alt="Login code e-mail"></td>
+  </tr>
+</table>
+
+In the panel, the customer page gets a card with *Reset 2FA* and *Turn off 2FA*, and the policy has its own page:
+
+<img src="https://raw.githubusercontent.com/calmfoxpl/sylius-shop-two-factor-plugin/main/docs/images/customer-card.png" width="501" alt="Two-factor authentication card on the customer page">
+
+<img src="https://raw.githubusercontent.com/calmfoxpl/sylius-shop-two-factor-plugin/main/docs/images/policy.png" width="800" alt="Customer two-factor authentication policy page">
+
 ## Requirements
 
 | | Version |

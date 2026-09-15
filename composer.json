@@ -15,12 +15,18 @@
         "security"
     ],
     "license": "MIT",
+    "homepage": "https://github.com/calmfoxpl/sylius-shop-two-factor-plugin",
     "authors": [
         {
             "name": "Calmfox",
             "homepage": "https://calmfox.pl"
         }
     ],
+    "support": {
+        "issues": "https://github.com/calmfoxpl/sylius-shop-two-factor-plugin/issues",
+        "source": "https://github.com/calmfoxpl/sylius-shop-two-factor-plugin",
+        "security": "https://github.com/calmfoxpl/sylius-shop-two-factor-plugin/security/advisories/new"
+    },
     "require": {
         "php": "^8.2",
         "bacon/bacon-qr-code": "^3.0",
