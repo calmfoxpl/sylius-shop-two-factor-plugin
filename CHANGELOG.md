@@ -5,6 +5,12 @@ All notable changes to this project are documented in this file. The format foll
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-05
+
+### Changed
+
+- The policy page moved from Configuration to **Calmfox services → Two-factor authentication for customers**, a group of the admin menu that every Calmfox plugin shares for the settings of its service.
+
 ## [1.0.0] - 2026-09-15
 
 ### Added
@@ -17,5 +23,6 @@ All notable changes to this project are documented in this file. The format foll
 - Access to the 2FA pages granted by route name; the policy condition, form renderers and the `shop_passkey` provider apply to shop users only.
 - English and Polish translations.
 
-[Unreleased]: https://github.com/calmfoxpl/sylius-shop-two-factor-plugin/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/calmfoxpl/sylius-shop-two-factor-plugin/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/calmfoxpl/sylius-shop-two-factor-plugin/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/calmfoxpl/sylius-shop-two-factor-plugin/releases/tag/v1.0.0

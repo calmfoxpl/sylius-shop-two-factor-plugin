@@ -82,3 +82,7 @@ calmfox_shop_two_factor:
         on: on
         status: Status
         pending: must turn a method on again
+
+calmfox:
+    menu:
+        section: Calmfox services

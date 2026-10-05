@@ -28,6 +28,18 @@ final class PanelTest extends FunctionalTestCase
         self::assertSame(TwoFactorPolicy::REQUIRED, $this->service('calmfox_shop_two_factor.policy', TwoFactorPolicy::class)->current());
     }
 
+    /** The page sits in the "Calmfox services" group of the menu, right after Configuration. */
+    public function testThePolicyPageIsInTheCalmfoxServicesGroup(): void
+    {
+        $this->logInAsAdmin();
+
+        $crawler = $this->client->request('GET', '/admin/customer-two-factor/settings');
+        self::assertResponseIsSuccessful();
+
+        self::assertGreaterThan(0, $crawler->filter('a[href="/admin/customer-two-factor/settings"]')->count());
+        self::assertStringContainsString('Calmfox services', $crawler->filter('.navbar-vertical, aside, nav')->text(''));
+    }
+
     public function testResetFromTheCustomerPageRequiresTurningAMethodOnAgain(): void
     {
         $user = $this->customerWithApp();

@@ -82,3 +82,7 @@ calmfox_shop_two_factor:
         on: włączona
         status: Stan
         pending: musi ponownie włączyć metodę
+
+calmfox:
+    menu:
+        section: Usługi Calmfox

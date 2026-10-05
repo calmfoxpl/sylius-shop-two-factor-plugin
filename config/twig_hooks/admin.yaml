@@ -6,7 +6,7 @@ sylius_twig_hooks:
                 template: '@CalmfoxSyliusShopTwoFactorPlugin/admin/customer/two_factor_card.html.twig'
                 priority: -100
 
-        # Configuration → Two-factor authentication for customers
+        # Calmfox services → Two-factor authentication for customers
         'calmfox_shop_two_factor.admin_settings.create.content.header':
             breadcrumbs:
                 template: '@CalmfoxSyliusShopTwoFactorPlugin/admin/settings/breadcrumbs.html.twig'

@@ -16,7 +16,7 @@ Two-factor authentication for **shop customers** in Sylius 2, built on [scheb/2f
   - a method is turned on only after it has been used once (a code from the app or the mailbox, or a verified passkey),
   - turning a method off asks for the current password,
   - e-mail codes are throttled.
-- **Policy in the panel:** *Configuration → Two-factor authentication for customers* has three settings:
+- **Policy in the panel:** *Calmfox services → Two-factor authentication for customers* has three settings:
   - **required:** a customer without a method sees only the login security page in their account; browsing, cart and checkout keep working,
   - **optional:** the default,
   - **turned off:** nobody is asked.
