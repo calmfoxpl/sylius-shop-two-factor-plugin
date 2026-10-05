@@ -5,6 +5,12 @@ All notable changes to this project are documented in this file. The format foll
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-10-05
+
+### Fixed
+
+- The policy page answered with an error on Sylius before 2.2.9, whose page title reads a resource name this page does not have.
+
 ## [1.1.0] - 2026-10-05
 
 ### Changed
@@ -23,6 +29,7 @@ All notable changes to this project are documented in this file. The format foll
 - Access to the 2FA pages granted by route name; the policy condition, form renderers and the `shop_passkey` provider apply to shop users only.
 - English and Polish translations.
 
-[Unreleased]: https://github.com/calmfoxpl/sylius-shop-two-factor-plugin/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/calmfoxpl/sylius-shop-two-factor-plugin/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/calmfoxpl/sylius-shop-two-factor-plugin/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/calmfoxpl/sylius-shop-two-factor-plugin/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/calmfoxpl/sylius-shop-two-factor-plugin/releases/tag/v1.0.0
